@@ -35,7 +35,7 @@
                     <template>
                         <!--修改按钮-->
                         <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
-<!--                        删除按钮-->
+                        <!-- 删除按钮-->
                         <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
                         <!--分配角色按钮-->
                         <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
@@ -45,6 +45,16 @@
                 </el-table-column>
                 <el-table-column label="操作"></el-table-column>
             </el-table>
+            <!--分页区-->
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="queryInfo.pageNum"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="queryInfo.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
         </el-card>
     </div>
 </template>
@@ -55,7 +65,9 @@
                 //获取用户列表参数对象
                 queryInfo: {
                     query: "",
+                    //当前的页数
                     pageNum: 1,
+                    //当前每页显示多少条数据
                     pageSize: 2
                 },
                 userList: [],
@@ -67,10 +79,20 @@
         },
         methods:{
             async getUserList(){
-                const {data: res} = await this.$http.post('users/list',this.queryInfo)
-                console.log("res:"+JSON.stringify(res.datas))
-                this.total = res.total
-                this.userList = res.datas.records
+                const res = await this.$http.post('users/list',this.queryInfo)
+                const record = res.data.datas
+                console.log("record:"+JSON.stringify(record))
+                this.userList = record.records
+                this.total = record.total
+
+            },
+            handleSizeChange(newSize){
+                console.log(newSize)
+                this.queryInfo.pageSize = newSize
+            },
+            handleCurrentChange(newPage){
+                console.log(newPage)
+                this.queryInfo.pageNum = newPage
             }
         }
     }
