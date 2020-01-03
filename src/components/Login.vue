@@ -59,7 +59,6 @@
                     const {data: res} = await this.$http.post('login',this.userLogin)
                     if(res.code == 1){
                         this.$message.success(res.datas)
-                        console.log("res："+ JSON.stringify(res))
                         //登录之后的token 后台生成token
                         window.sessionStorage.setItem('token',"ni jiu shi w d token")
                         this.$router.push('/home')
