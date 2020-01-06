@@ -31,4 +31,5 @@ Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.prototype.$message = Message
 Vue.prototype.$notify = Notification
-Vue.prototype.$alert = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm

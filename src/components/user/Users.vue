@@ -189,20 +189,32 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                }).then(async() => {
+                    const res =await this.$http.delete('users/delete/'+id)
+                    if(res.data.code == 1){
+                        this.getUserList()
+                        this.$notify({
+                            title: '删除成功',
+                            position: 'bottom-right',
+                            type: 'success',
+                            time: '2'
+                        });
+                    }else{
+                        this.$notify({
+                            title: '删除失败！',
+                            position: 'bottom-right',
+                            type: 'false',
+                            time: '2'
+                        });
+                    }
                 }).catch(() => {
-                    this.$message({
+                    this.$notify({
+                        title: '取消删除',
+                        position: 'bottom-right',
                         type: 'info',
-                        message: '已取消删除'
+                        time: '2'
                     });
                 });
-                /*console.log(id)
-                const res = await this.$http.delete('users/delete/'+id)
-                const record = res.data.datas*/
             },
             //监听添加用户对话框的关闭事件
             dialogClosed(){
@@ -218,7 +230,6 @@
                         this.dialogVisible = false
                         this.getUserList()
                         this.$notify({
-                            title: '成功',
                             message: _this.userFunc+'成功！',
                             position: 'bottom-right',
                             type: 'success',
@@ -226,7 +237,6 @@
                         });
                     }else{
                         this.$notify({
-                            title: '失败',
                             message: _this.userFunc+'失败！',
                             position: 'bottom-right',
                             type: 'false',
